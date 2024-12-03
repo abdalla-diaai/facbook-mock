@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block scripts %}
+<script src="{% static 'posts/index.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+posts
+{% endblock %}
+
+{% block content %}
+
+<div id="posts">
+
+</div>
+<div id="spinner-box" class="text-center">
+    <div class="spinner-border text-danger" role="status">
+    </div>
+</div>
+<div class="text-center mb-3" id="load-more">
+    <button class="btn btn-primary" id="load-btn">Load More</button>
+</div>
+
+
+
+{% endblock content %}
