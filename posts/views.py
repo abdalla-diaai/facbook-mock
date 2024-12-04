@@ -1,14 +1,27 @@
 from django.shortcuts import render, HttpResponse
-from .models import *
 from django.http import JsonResponse
 from django.core import serializers
+from .models import *
+from .forms import *
+
+# helper function to check if request is ajax
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 # Create your views here.
 
 def post_list_and_create(request):
-    qs = Post.objects.all()
+    form = PostForm(request.POST or None)
+    if is_ajax(request=request):
+        if form.is_valid():
+            author = Profile.objects.get(user=request.user)
+            post = form.save(commit=False)
+            post.author = author
+            post.save()
+
     return render(request, 'posts/index.html', {
-        'posts': qs
+        'form': form
     }
     )
 
@@ -32,8 +45,7 @@ def load_posts(request, num_posts):
         data.append(item)
     return JsonResponse({'data': data[lower:upper], 'size': size})
 
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
 
 def like_unlike_post(request):
     if is_ajax(request=request):
