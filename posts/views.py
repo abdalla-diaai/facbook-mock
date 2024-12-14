@@ -77,3 +77,16 @@ def view_post(request, pk):
         'post': post,
     }
     )
+
+def post_details(request, pk):
+    post = Post.objects.get(pk=pk)
+    data = {
+        'id': post.id,
+        'title': post.title,
+        'body': post.body,
+        'author': post.author.user.username,
+        'logged_in': request.user.username
+    }
+    return JsonResponse({
+        'data': data,
+    })
