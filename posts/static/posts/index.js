@@ -7,6 +7,7 @@ let postForm = $('#post-form');
 let title = $('#id_title');
 let body = $('#id_body');
 let alert = $('#alert-box');
+let url = window.location.href
 let visible = 3;
 
 // function to get csrf tokens for ajax calls
@@ -78,7 +79,7 @@ const getData = () => {
                             <div class="card-body">
                                 <h5 class="card-title">${element.title}</h5>
                                 <p class="card-text">${element.body}.</p>
-                                <a href="#" class="btn btn-primary">Details</a>
+                                <a href="${url}${element.id}" class="btn btn-primary">Details</a>
                                 <form class="like-unlike" data-form-id="${element.id}">
                                     <button href="#" class="btn btn-primary" id="like-unlike-${element.id}">
                                     ${element.liked ? `unlike (${element.count})`: `like (${element.count})`}

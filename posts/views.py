@@ -69,3 +69,11 @@ def like_unlike_post(request):
         })
     
 
+def view_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    form = PostForm
+    return render(request, 'posts/details.html', {
+        'form': form,
+        'post': post,
+    }
+    )
