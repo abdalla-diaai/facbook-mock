@@ -1,6 +1,9 @@
 from django.shortcuts import render, HttpResponse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.core import serializers
+from django.urls import reverse
+from profiles.models import Profile
+
 from .models import *
 from .forms import *
 
@@ -13,12 +16,14 @@ def is_ajax(request):
 
 def post_list_and_create(request):
     form = PostForm(request.POST or None)
+    author = Profile.objects.get(user=request.user)
+    print(author)
     if is_ajax(request=request):
         if form.is_valid():
-            author = Profile.objects.get(user=request.user)
             post = form.save(commit=False)
             post.author = author
             post.save()
+
 
     return render(request, 'posts/index.html', {
         'form': form
@@ -27,23 +32,24 @@ def post_list_and_create(request):
 
 
 def load_posts(request, num_posts):
-    visible = 3
-    upper = num_posts
-    lower = num_posts - visible
-    size = Post.objects.all().count()
-    posts = Post.objects.all()
-    data = []
-    for post in posts:
-        item = {
-            'id': post.id,
-            'title': post.title,
-            'body': post.body,
-            'liked': True if request.user in post.liked.all() else False,
-            'count': post.like_count,
-            'author': post.author.user.username
-        }
-        data.append(item)
-    return JsonResponse({'data': data[lower:upper], 'size': size})
+    if is_ajax(request=request):
+        visible = 3
+        upper = num_posts
+        lower = num_posts - visible
+        size = Post.objects.all().count()
+        posts = Post.objects.all()
+        data = []
+        for post in posts:
+            item = {
+                'id': post.id,
+                'title': post.title,
+                'body': post.body,
+                'liked': True if request.user in post.liked.all() else False,
+                'count': post.like_count,
+                'author': post.author.user.username
+            }
+            data.append(item)
+        return JsonResponse({'data': data[lower:upper], 'size': size})
 
 
 
@@ -61,3 +67,5 @@ def like_unlike_post(request):
             "liked": liked,
             "count": post.liked.count(),
         })
+    
+

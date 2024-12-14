@@ -2,9 +2,14 @@
 let postsBox = $('#posts');
 let loadBtn = $('#load-btn');
 let spinnerBox = $('.spinner-border');
-let loadMore = $('#load-more')
+let loadMore = $('#load-more');
+let postForm = $('#post-form');
+let title = $('#id_title');
+let body = $('#id_body');
+let alert = $('#alert-box');
 let visible = 3;
 
+// function to get csrf tokens for ajax calls
 const getCookie = (name) => {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -20,9 +25,11 @@ const getCookie = (name) => {
     }
     return cookieValue;
 }
-const csrftoken = getCookie('csrftoken');
 
+// function to like and unlike posts
 const likeUnlikePosts = () => {
+    const csrftoken = getCookie('csrftoken');
+
     const likeUnlike = [...$('.like-unlike')];
     likeUnlike.forEach(form => form.addEventListener('submit', e => {
         e.preventDefault();
@@ -49,7 +56,7 @@ const likeUnlikePosts = () => {
     }));
 };
 
-
+// function to get posts from database
 const getData = () => {
     $.ajax({
         type: 'GET',
@@ -90,18 +97,45 @@ const getData = () => {
                 loadMore.text("no more posts to load")
             }
         },
-        
         error: function (error) {
             console.log('error', error);
         }
     });
 }
 
+// function to load more posts
 loadBtn.on('click', () => {
     spinnerBox.removeClass('visually-hidden');
     visible += 3;
     getData();
 });
+
+// function to add new post
+postForm.on('submit', e => {
+    const csrftoken = getCookie('csrftoken');
+    e.preventDefault();
+    $.ajax({
+        type: 'POST',
+        url: '',
+        data: {
+            'csrfmiddlewaretoken': csrftoken,
+            'title': title.val(),
+            'body': body.val(),
+        },
+        success: function(response){
+            $('#addPostModal').modal('hide');
+            location.reload();
+            handleAlerts('success', 'New post created!');
+            postForm.reset();
+        },
+        error: function(error) {
+            console.log(error);
+            handleAlerts('danger', 'Something went wrong!');
+
+        }
+    });
+});
+
 
 getData();
 
