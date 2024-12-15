@@ -33,7 +33,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("profiles:login"))
 
 def register(request):
     if request.method == "POST":
