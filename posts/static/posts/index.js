@@ -70,10 +70,6 @@ const getData = () => {
                 data.forEach(element => {
                     // Append the post content directly
                     postsBox.append(`
-                        <div class="post">
-                            <h3>${element.title}</h3>
-                            <p><b>${element.body}</b></p>
-                        </div>
                         <div class="card mb-2" style="width: 18rem;">
                             <img src="..." class="card-img-top" alt="...">
                             <div class="card-body">

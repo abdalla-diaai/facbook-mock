@@ -88,7 +88,6 @@ $('#delete-form').on('submit', e => {
         success: function(response){
             $('#deleteModal').modal('hide');
             window.location.href = window.location.origin;
-            location.reload();
         },
         error: function(error) {
             console.log(error);
