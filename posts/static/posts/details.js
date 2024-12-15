@@ -39,7 +39,6 @@ $.ajax({
         url: url,
         success: function(response){
             const data = response.data
-            console.log(data.title);
 
             if (data.logged_in === data.author) {
                 editBtn.removeClass('visually-hidden');
@@ -60,7 +59,7 @@ $('#update-form').on('submit', e => {
     e.preventDefault();
     $.ajax({
         type: 'POST',
-        url: updateURl,
+        url: updateUrl,
         data: {
             'csrfmiddlewaretoken': csrftoken,
             'title': titleInput.val(),
@@ -82,7 +81,7 @@ $('#delete-form').on('submit', e => {
     e.preventDefault();
     $.ajax({
         type: 'POST',
-        url: deleteURl,
+        url: deleteUrl,
         data: {
             'csrfmiddlewaretoken': csrftoken,
         },
