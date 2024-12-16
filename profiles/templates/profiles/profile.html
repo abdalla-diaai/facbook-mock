@@ -12,17 +12,34 @@ profile
 
 {% block content %}
 
-<h2>Profile</h2>
 
 {% if message %}
 <div>{{ message }}</div>
 {% endif %}
+<div id="profile-box">
+    <h2>Profile</h2>
 
-{{ author.user }}
-{{ author.bio }}
-<img class="profile-avatar" src="{{ author.avatar.url }}" class="rounded-circle" alt="User Profile">
-
-{{ author.updated }}
-{{ author.created }}
+    <div>
+        <img class="profile-avatar" src="{{ author.avatar.url }}" class="rounded-circle" alt="User Profile">
+    </div>
+    
+    <div>
+        <ul>
+            <li>
+                <b>Name:</b> {{ author.user }}
+            </li>
+            <li>
+                <b>Bio:</b>{{ author.bio }}
+    
+            </li>
+            <li>
+                <b>Created:</b> {{ author.updated }}
+            </li>
+            <li>
+                <b>Last update:</b> {{ author.created }}
+            </li>
+        </ul>
+    </div>
+</div>
 
 {% endblock content %}
