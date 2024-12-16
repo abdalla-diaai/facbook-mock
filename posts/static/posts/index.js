@@ -36,9 +36,6 @@ const likeUnlikePosts = () => {
         e.preventDefault();
         const clickedId = e.target.getAttribute('data-form-id');
         const clickedBtn = $(`#like-unlike-${clickedId}`);
-        console.log(clickedBtn)
-        console.log(clickedId)
-
         $.ajax({
             type: 'POST',
             url: '/like_unlike_post/',

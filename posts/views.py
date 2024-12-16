@@ -16,8 +16,6 @@ def is_ajax(request):
 
 def post_list_and_create(request):
     form = PostForm(request.POST or None)
-    print(f"user: {request.user}")
-
     author = Profile.objects.get(user=request.user)
 
     if is_ajax(request=request):
@@ -28,6 +26,7 @@ def post_list_and_create(request):
 
     return render(request, 'posts/index.html', {
         'form': form,
+        'avatar': author.avatar,
     }
     )
 
@@ -108,3 +107,8 @@ def delete_post(request, pk):
     if is_ajax(request=request):
         post.delete()
     return JsonResponse({})
+
+
+
+
+

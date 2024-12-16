@@ -59,6 +59,14 @@ def register(request):
                 {"message": "Username already taken."},
             )
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("posts:index"))
     else:
         return render(request, "profiles/register.html")
+    
+
+
+def view_profile(request):
+    author = Profile.objects.get(user=request.user)
+    return render(request, "profiles/profile.html", {
+        "author": author,
+    })
